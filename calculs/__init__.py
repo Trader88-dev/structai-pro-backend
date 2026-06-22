@@ -14,6 +14,6 @@ from .voile import EntreeVoile, calculer_voile
 
 from .escalier import EntreeEscalier, calculer_escalier
 from .linteau import EntreeLinteau, calculer_linteau
-from .sem_isolee import EntreeSemIsolee, calculer_semelle_isolee
+from .semelle_isolee import EntreeSemIsolee, calculer_semelle_isolee
 from .acrotere import EntreeAcrotere, calculer_acrotere
 from .mur_soutenement import EntreeMurSoutenement, calculer_mur_soutenement
