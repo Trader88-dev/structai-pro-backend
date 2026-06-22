@@ -4,6 +4,7 @@ from .poteau import EntreePoteau, ResultatPoteau, calculer_poteau
 from .semelle import EntreeSemelle, ResultatSemelle, calculer_semelle
 from .radier import EntreeRadier, ResultatRadier, calculer_radier
 from .dalle import EntreeDalle, ResultatDalle, calculer_dalle
+from .voile import EntreeVoile, calculer_voile
 from .poutre_continue import EntreePoutreContinue, ResultatPoutreContinue, Travee, calculer_poutre_continue
 
 __all__ = [
