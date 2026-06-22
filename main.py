@@ -19,6 +19,12 @@ from calculs import (
     EntreeRadier, calculer_radier,
     EntreeDalle, calculer_dalle,
     EntreePoutreContinue, Travee, calculer_poutre_continue,
+    EntreeVoile, calculer_voile,
+    EntreeEscalier, calculer_escalier,
+    EntreeLinteau, calculer_linteau,
+    EntreeSemIsolee, calculer_semelle_isolee,
+    EntreeAcrotere, calculer_acrotere,
+    EntreeMurSoutenement, calculer_mur_soutenement,
 )
 
 app = FastAPI(title="StructAI Pro API", version="1.0.0")
@@ -198,6 +204,144 @@ def calc_poutre_continue(req: PoutreContinueRequest):
             "travees_res": [t.__dict__ for t in res.travees_res],
         }
         return result
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+
+# ── Routes calculs supplémentaires ───────────────────────────────────────────
+
+class VoileRequest(BaseModel):
+    L: float
+    h: float
+    e: float
+    appui: str = "encastre-rotule"
+    N_k: float = 500.0
+    M_k: float = 50.0
+    V_k: float = 20.0
+    pct_G: float = 0.7
+    beton: str = "C25/30"
+    acier: str = "B500B"
+    enrobage_classe: str = "XC1"
+    norme: str = "EC2"
+
+class EscalierRequest(BaseModel):
+    L_h: float = 3.0
+    hauteur: float = 2.7
+    g_giron: float = 0.28
+    h_contre: float = 0.17
+    ep: float = 150
+    g_k: float = 6.0
+    q_k: float = 2.5
+    beton: str = "C25/30"
+    acier: str = "B500B"
+    enrobage_classe: str = "XC1"
+    norme: str = "EC2"
+
+class LinteauRequest(BaseModel):
+    b: float = 200
+    h: float = 300
+    L: float = 1.5
+    g_k: float = 10.0
+    q_k: float = 5.0
+    beton: str = "C25/30"
+    acier: str = "B500B"
+    enrobage_classe: str = "XC1"
+    norme: str = "EC2"
+
+class SemelleIsoleeRequest(BaseModel):
+    b_p: float = 300
+    h_p: float = 300
+    h_sem: float = 500
+    N_k: float = 800.0
+    M_kx: float = 0.0
+    M_ky: float = 0.0
+    sigma_sol: float = 200.0
+    pct_G: float = 0.7
+    beton: str = "C25/30"
+    acier: str = "B500B"
+    enrobage_classe: str = "XC1"
+    norme: str = "EC2"
+
+class AcrotereRequest(BaseModel):
+    h: float = 0.80
+    e: float = 150
+    g_k: float = 3.5
+    q_vent: float = 1.0
+    zone_sismique: str = "2"
+    beton: str = "C25/30"
+    acier: str = "B500B"
+    enrobage_classe: str = "XC1"
+    norme: str = "EC2"
+
+class MurSoutenementRequest(BaseModel):
+    H: float = 3.0
+    e_voile: float = 250
+    B_semelle: float = 2.0
+    e_semelle: float = 400
+    d_encastrement: float = 0.5
+    gamma_terre: float = 18.0
+    phi_deg: float = 30.0
+    delta_deg: float = 0.0
+    q_surcharge: float = 10.0
+    sigma_sol: float = 200.0
+    mu_glissement: float = 0.5
+    beton: str = "C25/30"
+    acier: str = "B500B"
+    enrobage_classe: str = "XC2"
+    norme: str = "EC2"
+
+@app.post("/calcul/voile")
+def calc_voile(req: VoileRequest):
+    try:
+        entree = EntreeVoile(**req.dict())
+        res = calculer_voile(entree)
+        return res.__dict__
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.post("/calcul/escalier")
+def calc_escalier(req: EscalierRequest):
+    try:
+        entree = EntreeEscalier(**req.dict())
+        res = calculer_escalier(entree)
+        return res.__dict__
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.post("/calcul/linteau")
+def calc_linteau(req: LinteauRequest):
+    try:
+        entree = EntreeLinteau(**req.dict())
+        res = calculer_linteau(entree)
+        return res.__dict__
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.post("/calcul/semelle-isolee")
+def calc_semelle_isolee(req: SemelleIsoleeRequest):
+    try:
+        entree = EntreeSemIsolee(**req.dict())
+        res = calculer_semelle_isolee(entree)
+        return res.__dict__
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.post("/calcul/acrotere")
+def calc_acrotere(req: AcrotereRequest):
+    try:
+        entree = EntreeAcrotere(**req.dict())
+        res = calculer_acrotere(entree)
+        return res.__dict__
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.post("/calcul/mur-soutenement")
+def calc_mur_soutenement(req: MurSoutenementRequest):
+    try:
+        entree = EntreeMurSoutenement(**req.dict())
+        res = calculer_mur_soutenement(entree)
+        return res.__dict__
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
