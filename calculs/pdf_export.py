@@ -116,7 +116,9 @@ def _footer(els, st):
     els.append(Spacer(1, 8*mm))
     els.append(HRFlowable(width="100%", thickness=0.5, color=colors.lightgrey))
     els.append(Spacer(1, 3*mm))
-    els.append(Paragraph("Note générée par StructAI Pro — Usage professionnel — Vérifier conformité réglementaire locale", st["footer"]))
+    els.append(Paragraph("Note générée par StructAI Pro — Usage professionnel — structaipro.com/cgu", st["footer"]))
+    els.append(Spacer(1, 2*mm))
+    els.append(Paragraph("Important : Ce document est généré par StructAI Pro, un outil d'assistance au calcul structurel. Les résultats doivent être vérifiés et validés par un ingénieur qualifié avant toute utilisation dans un projet réel. L'utilisateur demeure responsable de la vérification des hypothèses, des données d'entrée, de la conformité aux normes applicables et de la décision finale de conception.", st["footer"]))
 
 
 # ════════════════════════════════════════════════════════════════════════════
