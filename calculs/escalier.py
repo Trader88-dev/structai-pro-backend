@@ -132,3 +132,4 @@ def calculer_escalier(e: EntreeEscalier) -> ResultatEscalier:
 
     msgs.append(f"Angle paillasse : {alpha_deg:.1f}° | Longueur inclinée : {L_inc:.2f} m")
     return r
+
