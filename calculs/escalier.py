@@ -113,11 +113,16 @@ def calculer_escalier(e: EntreeEscalier) -> ResultatEscalier:
     ret_r, ch_r = _choisir(As_rep)
     r.As_rep_retenu, r.choix_rep = ret_r, ch_r
 
-    # Flèche forfaitaire L/h ≥ 20 (dalles sur appuis simples)
+    # Flèche forfaitaire L/h ≥ 20 (dalles sur appuis simples) — vérification réglementaire EC2 §7.4.2
     lh_reel = e.L_h * 1000 / d
     lh_lim = 20.0
     r.fleche_adm = round(e.L_h*1000/250, 1)
-    r.fleche_calc = round(5/48*q_ELU*(e.L_h*1000)**4/(E_cm*(1000*e.ep**3/12))*1e-3, 1)
+
+    # Flèche indicative (charge répartie, appuis simples) : delta = 5*w*L^4 / (384*E*I)
+    # w en N/mm (kN/m ≡ N/mm), L en mm, E en N/mm² (MPa), I en mm^4
+    inertie = 1000 * e.ep**3 / 12  # mm^4 par mètre de largeur
+    r.fleche_calc = round(5 * q_ELU * (e.L_h*1000)**4 / (384 * E_cm * inertie), 1)
+
     r.fleche_ok = lh_reel <= lh_lim*1.3
 
     if not r.fleche_ok:
