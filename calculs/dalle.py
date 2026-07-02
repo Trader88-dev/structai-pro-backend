@@ -304,9 +304,14 @@ def calculer_dalle(e: EntreeDalle) -> ResultatDalle:
     l_d_reel = Lx * 1000 / d_x
 
     fleche_adm = Lx * 1000 / 250   # mm
-    # Flèche approchée
+
+    # Flèche approchée (charge répartie, assimilation à une bande de dalle en flexion)
+    # NOTE : coefficient 5/48 (appuis simples 4 côtés) ou 1/16 (autres cas) — approximation
+    # empruntée à la théorie des poutres. Une dalle bidirectionnelle relève en toute rigueur
+    # de la théorie des plaques (coefficients dépendant de Ly/Lx, cf. tables de Timoshenko),
+    # à affiner si une précision réglementaire stricte est requise.
     coeff_k = 5/48 if all(v == "appuye" for v in appuis.values()) else 1/16
-    fleche_calc = coeff_k * q_ELS * (Lx*1000)**4 / (E_cm * (1000*ep**3/12)) * 1e-3
+    fleche_calc = coeff_k * q_ELS * (Lx*1000)**4 / (E_cm * (1000*ep**3/12))
 
     r.fleche_admissible = round(fleche_adm, 1)
     r.fleche_calculee   = round(fleche_calc, 1)
